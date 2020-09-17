@@ -37,16 +37,16 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
         
-    }
+        $this->validate($request, [
+            'username' => 'required',
+            'password' => 'required',
+        ]);
 
-    public function authenticate(Request $request)
-    {
-        $credentials = $request->only('username', 'password');
-
-        if (Auth::attempt($credentials)) {
-            // Authentication passed...
-            return redirect()->intended('home');
+        if(Auth::attempt(['username' => $request->username, 'password' => $request->password]))
+        {
+                return redirect()->route('home');
         }
+        
     }
 
 
