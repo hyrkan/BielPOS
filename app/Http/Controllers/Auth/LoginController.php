@@ -45,19 +45,8 @@ class LoginController extends Controller
         return view('welcome');
     }
 
-    public function login(Request $request)
-    {   
-
-        $this->validate($request, [
-            'username' => 'required',
-            'password' => 'required',
-        ]);
-        
-        if(Auth::attempt(['username' => $request->username, 'password' => $request->password]))
-        {
-                return redirect()->route('home');
-        }
-
-       
+    public function username()
+    {
+        return 'username';
     }
 }
