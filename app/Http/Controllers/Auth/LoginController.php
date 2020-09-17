@@ -36,22 +36,28 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-        
-        $this->validate($request, [
-            'username' => 'required',
-            'password' => 'required',
-        ]);
-
-        if(Auth::attempt(['username' => $request->username, 'password' => $request->password]))
-        {
-                return redirect()->route('home');
-        }
-        
+    
     }
 
 
     public function showLoginForm()
     {
         return view('welcome');
+    }
+
+    public function login(Request $request)
+    {   
+
+        $this->validate($request, [
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+        
+        if(Auth::attempt(['username' => $request->username, 'password' => $request->password]))
+        {
+                return redirect()->route('home');
+        }
+
+       
     }
 }
