@@ -41,7 +41,7 @@ export default class Cart extends Component {
     }
 
     getLowStocks(){
-        axios.get("/getLowStock")
+        axios.get("https://sampos.herokuapp.com/getLowStock")
         .then(res => {
           this.setState({num_low_stocks:res.data})
         }).catch(err => {
@@ -50,7 +50,7 @@ export default class Cart extends Component {
     }
 
     transactNow(){
-        axios.get("/getTransact")
+        axios.get("https://sampos.herokuapp.com/getTransact")
         .then(res => {
           this.setState({num_transactions:res.data})
         }).catch(err => {
@@ -70,7 +70,7 @@ export default class Cart extends Component {
         
         if (!!barcode) {
             axios
-                .post("/getProduct", { barcode })
+                .post("https://sampos.herokuapp.com/getProduct", { barcode })
                 .then(res => {
                     this.handlePush(res.data);
                     this.setState({ barcode: "" });
@@ -142,7 +142,7 @@ export default class Cart extends Component {
     handleSubmit(){
         const {cart, total} = this.state;
         if(cart.length > 0){
-            axios.post("/cart_out",{
+            axios.post("https://sampos.herokuapp.com/cart_out",{
                 cart : cart,
                 total : this.getTotal(cart)
             })
