@@ -139,45 +139,43 @@ export default class Cart extends Component {
         return sum(total).toFixed(2);
     }
 
+    
     handleSubmit(){
-        const {cart, total} = this.state;
+        const {cart} = this.state;
         if(cart.length > 0){
-            axios.post("/cart_out",{
-                cart : cart,
-                total : this.getTotal(cart)
+            Swal.fire({
+                title: 'Confirming Transaction',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Confirm'
+              }).then((result) => {
+                if (result.isConfirmed) {
+
+                    axios.post("/cart_out",{
+                        cart : cart,
+                        total : this.getTotal(cart)
+                    }),
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Transaction complete',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }),
+                    this.emptyCart();
+                    this.getLowStocks();
+                    this.transactNow();
+
+                }
+               
             })
             .then(
                 
-                  Swal.fire({
-                    title: 'Confirming Transaction',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Confirm'
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Transaction complete',
-                            showConfirmButton: false,
-                            timer: 1500
-                          })
-                        
-                        
-                        this.emptyCart();
-                        this.getLowStocks();
-                        this.transactNow();
-                        
-
-                    }
-                   
-                  }),
                  
-            )
-            
-            .catch(err => {
+            ).catch(err => {
                 console.log('error');
             });
         }else{

@@ -85464,15 +85464,10 @@ var Cart = /*#__PURE__*/function (_Component) {
     value: function handleSubmit() {
       var _this5 = this;
 
-      var _this$state = this.state,
-          cart = _this$state.cart,
-          total = _this$state.total;
+      var cart = this.state.cart;
 
       if (cart.length > 0) {
-        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/cart_out", {
-          cart: cart,
-          total: this.getTotal(cart)
-        }).then(sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
+        sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
           title: 'Confirming Transaction',
           text: "You won't be able to revert this!",
           icon: 'warning',
@@ -85482,20 +85477,21 @@ var Cart = /*#__PURE__*/function (_Component) {
           confirmButtonText: 'Confirm'
         }).then(function (result) {
           if (result.isConfirmed) {
-            sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
+            axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/cart_out", {
+              cart: cart,
+              total: _this5.getTotal(cart)
+            }), sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
               icon: 'success',
               title: 'Transaction complete',
               showConfirmButton: false,
               timer: 1500
-            });
-
-            _this5.emptyCart();
+            }), _this5.emptyCart();
 
             _this5.getLowStocks();
 
             _this5.transactNow();
           }
-        }))["catch"](function (err) {
+        }).then()["catch"](function (err) {
           console.log('error');
         });
       } else {
@@ -85507,10 +85503,10 @@ var Cart = /*#__PURE__*/function (_Component) {
     value: function render() {
       var _this6 = this;
 
-      var _this$state2 = this.state,
-          cart = _this$state2.cart,
-          barcode = _this$state2.barcode,
-          num_transactions = _this$state2.num_transactions;
+      var _this$state = this.state,
+          cart = _this$state.cart,
+          barcode = _this$state.barcode,
+          num_transactions = _this$state.num_transactions;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
