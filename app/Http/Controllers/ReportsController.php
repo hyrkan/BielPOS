@@ -28,7 +28,7 @@ class ReportsController extends Controller
         $orders = DB::table('orders')
                             ->join('invoices', 'invoices.id', '=', 'orders.invoice_id')
                             ->where('invoices.store_id','=', $store_id)
-                            ->whereDate('created_at', Carbon::today())
+                            ->whereDate('created_at', '=', Carbon::today())
                             ->select('*')
                             ->get();
 
