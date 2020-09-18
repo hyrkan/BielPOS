@@ -153,18 +153,17 @@ export default class Cart extends Component {
                 confirmButtonText: 'Confirm'
               }).then((result) => {
                 if (result.isConfirmed) {
-
-                    axios.post("/cart_out",{
-                        cart : cart,
-                        total : this.getTotal(cart)
-                    }),
-                    
                     Swal.fire({
                         icon: 'success',
                         title: 'Transaction complete',
                         showConfirmButton: false,
                         timer: 1500
                     }),
+                    axios.post("/cart_out",{
+                        cart : cart,
+                        total : this.getTotal(cart)
+                    }),
+                    
                     this.emptyCart();
                     this.getLowStocks();
                     this.transactNow();
@@ -172,10 +171,7 @@ export default class Cart extends Component {
                 }
                
             })
-            .then(
-                
-                 
-            ).catch(err => {
+            .catch(err => {
                 console.log('error');
             });
         }else{

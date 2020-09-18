@@ -85477,21 +85477,21 @@ var Cart = /*#__PURE__*/function (_Component) {
           confirmButtonText: 'Confirm'
         }).then(function (result) {
           if (result.isConfirmed) {
-            axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/cart_out", {
-              cart: cart,
-              total: _this5.getTotal(cart)
-            }), sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
+            sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
               icon: 'success',
               title: 'Transaction complete',
               showConfirmButton: false,
               timer: 1500
+            }), axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/cart_out", {
+              cart: cart,
+              total: _this5.getTotal(cart)
             }), _this5.emptyCart();
 
             _this5.getLowStocks();
 
             _this5.transactNow();
           }
-        }).then()["catch"](function (err) {
+        })["catch"](function (err) {
           console.log('error');
         });
       } else {
