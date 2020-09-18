@@ -85326,7 +85326,7 @@ var Cart = /*#__PURE__*/function (_Component) {
     value: function getLowStocks() {
       var _this2 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("http://localhost:8000/getLowStock").then(function (res) {
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("api/getLowStock").then(function (res) {
         _this2.setState({
           num_low_stocks: res.data
         });
@@ -85337,7 +85337,7 @@ var Cart = /*#__PURE__*/function (_Component) {
     value: function transactNow() {
       var _this3 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("http://localhost:8000/getTransact").then(function (res) {
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("api/getTransact").then(function (res) {
         _this3.setState({
           num_transactions: res.data
         });
@@ -85360,7 +85360,7 @@ var Cart = /*#__PURE__*/function (_Component) {
       var barcode = this.state.barcode;
 
       if (!!barcode) {
-        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("http://localhost:8000/getProduct", {
+        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("api/getProduct", {
           barcode: barcode
         }).then(function (res) {
           _this4.handlePush(res.data);
@@ -85469,7 +85469,7 @@ var Cart = /*#__PURE__*/function (_Component) {
           total = _this$state.total;
 
       if (cart.length > 0) {
-        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("http://localhost:8000/cart_out", {
+        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("api/cart_out", {
           cart: cart,
           total: this.getTotal(cart)
         }).then(sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire({
