@@ -35,9 +35,6 @@
                                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Transactions Today</a>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link" id="past-tab" data-toggle="tab" href="#past" role="tab" aria-controls="home" aria-selected="true">Past Transactions</a>
-                                </li>
-                                <li class="nav-item" role="presentation">
                                     <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Items Bought</a>
                                 </li>
                             </ul>
@@ -89,7 +86,7 @@
                                             @foreach($past_transactions as $p_transaction)
                                             <tr>
                                                 <td>{{$p_transaction->invoice}}</td>
-                                                <td>P {{$p_transaction->total_price}}</td>
+                                                <td>&#8369; {{$p_transaction->total_price}}</td>
                                                 <td>{{ \Carbon\Carbon::parse($p_transaction->created_at)->format('d/m/Y H:m:s')}}</td>
                                                 <td>-</td>
                                             </tr>
@@ -125,7 +122,7 @@
                                                 <td>P {{$order->product_name}}</td>
                                                 <td>{{$order->brand_name }}</td>
                                                 <td>{{$order->unit}}</td>
-                                                <td> {{$order->quantity}}</td>
+                                                <td>{{$order->quantity}}</td>
                                                 <td>{{$order->price }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($order->created_at)->format('d/m/Y H:i:s')}}</td>
                                             </tr>
