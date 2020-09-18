@@ -20,11 +20,12 @@ class ReportsController extends Controller
     {
         $store_id = auth()->user()->store_id;
 
+        //fetch all transactions done today
         $transactions_today = Invoice::where('store_id', '=', $store_id)
                                 ->whereDate('created_at', '=', Carbon::today())
                                 ->get();
-                                
-
+                            
+        //fetch all items from the transactions
         $orders = DB::table('orders')
                             ->join('invoices', 'invoices.id', '=', 'orders.invoice_id')
                             ->where('invoices.store_id','=', $store_id)
@@ -32,12 +33,10 @@ class ReportsController extends Controller
                             ->select('*')
                             ->get();
 
-        
         $past_transactions = Invoice::where('store_id', '=', $store_id)
                             ->whereDate('created_at', '!=', Carbon::today())
                             ->get();
 
-                            
         $total_revenue =  $transactions_today->sum('total_price');
 
         return view('Reports.index',compact('transactions_today', 'orders', 'total_revenue','past_transactions'));

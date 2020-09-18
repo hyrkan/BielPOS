@@ -119,11 +119,11 @@
                                             @foreach($orders as $order)
                                             <tr>
                                                 <td>{{$order->invoice}}</td>
-                                                <td>P {{$order->product_name}}</td>
+                                                <td>{{$order->product_name}}</td>
                                                 <td>{{$order->brand_name }}</td>
                                                 <td>{{$order->unit}}</td>
                                                 <td>{{$order->quantity}}</td>
-                                                <td>{{$order->price }}</td>
+                                                <td>&#8369;{{$order->price }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($order->created_at)->format('d/m/Y H:i:s')}}</td>
                                             </tr>
                                             @endforeach
