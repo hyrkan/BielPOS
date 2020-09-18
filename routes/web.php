@@ -16,23 +16,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect('login');
 });
-
-
 Auth::routes(['register' => false] );
 Route::group(['middleware'=>'auth'], function(){
-   
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::resource('/account','RegisterController');
+    Route::resource('/store','StoreController');
+    Route::resource('/product','ProductController');
+    Route::resource('/inventory','StockInController');
+    Route::post('/getProduct','CartController@getProduct');
+    Route::post('/cart_out','CartController@store');
+    Route::get('/getLowStock', 'CartController@getLowStock');
+    Route::get('/getTransact', 'CartController@getTransact');
+    Route::resource('/report', 'ReportsController');
 });
-Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('/account','RegisterController');
-Route::resource('/store','StoreController');
-Route::resource('/product','ProductController');
-Route::resource('/inventory','StockInController');
-Route::post('/getProduct','CartController@getProduct');
-Route::post('/cart_out','CartController@store');
-Route::get('/getLowStock', 'CartController@getLowStock');
-Route::get('/getTransact', 'CartController@getTransact');
-Route::resource('/report', 'ReportsController');
-
 Route::get( '/{path?}', function(){
     return view( 'home' );
 } )->where('path', '.*');
