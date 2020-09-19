@@ -9,6 +9,10 @@ use Carbon\Carbon;
 use App\Order;
 use DB;
 use Illuminate\Http\Request;
+use Mike42\Escpos\Printer; 
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
 
 class CartController extends Controller
 {
@@ -34,6 +38,7 @@ class CartController extends Controller
         $barcode = $request->barcode;
         $products = DB::table('products')->where('store_id', '=', auth()->user()->store->id) 
             ->where('barcode', '=', $barcode)
+            ->where('quantity', '!=', 0)
             ->get();
 
         return response()->json($products);
@@ -87,6 +92,8 @@ class CartController extends Controller
     public function store(Request $request)
     {
 
+
+
         $data = request()->all();
         $date = Carbon::now();
         $store_id = auth()->user()->store_id;
@@ -130,6 +137,14 @@ class CartController extends Controller
 
             }
         }
+
+
+        $connector = new WindowsPrintConnector("EPSON TM-U220 Receipt");
+        $printer = new Printer($connector);
+        $printer -> text("Hello World!\n");
+        $printer -> cut();
+        $printer -> close();
+
 
     
        
