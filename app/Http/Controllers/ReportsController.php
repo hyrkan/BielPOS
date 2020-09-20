@@ -7,6 +7,7 @@ use App\Order;
 use App\Cart;
 use Carbon\Carbon;
 use DB;
+use PDF;
 use Illuminate\Http\Request;
 
 class ReportsController extends Controller
@@ -39,72 +40,28 @@ class ReportsController extends Controller
 
         $total_revenue =  $transactions_today->sum('total_price');
 
-        return view('Reports.index',compact('transactions_today', 'orders', 'total_revenue','past_transactions'));
+        
+        $inid = Invoice::latest()->first();
+
+           
+        return view('Reports.index',compact('transactions_today', 'orders', 'total_revenue','past_transactions','inid'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function invoice($id){
+
+        
+        $orders = DB::table('orders')
+        ->join('invoices', 'invoices.id', '=', 'orders.invoice_id')
+        ->where('invoices.id','=', $id)
+        ->whereDate('orders.created_at', '=', Carbon::today())
+        ->select('*')
+        ->get();
+
+        $pdf = PDF::loadView('myPDF', ['orders' => $orders, ])->setPaper(array(0,0,204,650));;
+        
+  
+        return $pdf->stream('itsolutionstuff.pdf');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+    
 }

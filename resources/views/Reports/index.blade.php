@@ -16,7 +16,54 @@
         </div>
         </div>
     </section>
-
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                       <h1>To Be Printed</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table  id="example3" class="table table-bordered table-striped text-center">
+                                <thead>
+                                    <tr>
+                                        <th>Billing ID</th>
+                                        <th>Revenue Per Billing</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr>
+                                        <td>{{$inid->invoice}}</td>
+                                        <td>&#8369; {{$inid->total_price}}</td>
+                                        <td>{{ \Carbon\Carbon::parse($inid->created_at)->format('d/m/Y H:m:s')}}</td>
+                                        <td><a href="/generate-pdf/{{$inid->id}}" class="btn btn-primary"> <i class="fa fa-print"></i> Print</a></td>
+                                    </tr>
+                                   
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Billing ID</th>
+                                        <th>Revenue Per Billing</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </tfoot>
+                            </table>       
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <section class="content">
         <div class="container-fluid">
             <div class="row">

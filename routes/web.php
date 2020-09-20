@@ -28,6 +28,8 @@ Route::group(['middleware'=>'auth'], function(){
     Route::get('/getLowStock', 'CartController@getLowStock');
     Route::get('/getTransact', 'CartController@getTransact');
     Route::resource('/report', 'ReportsController');
+    Route::get('generate-pdf/{id}','ReportsController@invoice');
+    
 });
 Route::get( '/{path?}', function(){
     return view( 'home' );

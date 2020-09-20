@@ -9,11 +9,6 @@ use Carbon\Carbon;
 use App\Order;
 use DB;
 use Illuminate\Http\Request;
-use Mike42\Escpos\Printer; 
-use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
-use Mike42\Escpos\PrintConnectors\FilePrintConnector;
-use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
-
 class CartController extends Controller
 {
     /**
@@ -139,11 +134,7 @@ class CartController extends Controller
         }
 
 
-        $connector = new WindowsPrintConnector("EPSON TM-U220 Receipt");
-        $printer = new Printer($connector);
-        $printer -> text("Hello World!\n");
-        $printer -> cut();
-        $printer -> close();
+       
 
 
     
