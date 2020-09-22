@@ -27,6 +27,7 @@ Route::group(['middleware'=>'auth'], function(){
     Route::post('/cart_out','CartController@store');
     Route::get('/getLowStock', 'CartController@getLowStock');
     Route::get('/getTransact', 'CartController@getTransact');
+    Route::get('/getAllproduct','CartController@getAllproduct');
     Route::resource('/report', 'ReportsController');
     Route::get('generate-pdf/{id}','ReportsController@invoice');
     

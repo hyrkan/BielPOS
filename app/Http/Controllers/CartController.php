@@ -37,8 +37,6 @@ class CartController extends Controller
             ->get();
 
         return response()->json($products);
-
-
     }
 
 
@@ -63,31 +61,10 @@ class CartController extends Controller
         return response()->json(sizeof($current_low));
         
     }
-
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-
+   
     //storing all orders from the cart
     public function store(Request $request)
     {
-
-
 
         $data = request()->all();
         $date = Carbon::now();
@@ -134,57 +111,10 @@ class CartController extends Controller
         }
 
 
-       
-
-
-    
-       
- 
-
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Cart  $cart
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Cart $cart)
-    {
-        
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Cart  $cart
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Cart $cart)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Cart  $cart
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Cart $cart)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Cart  $cart
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Cart $cart)
-    {
-        //
+    public function getAllproduct(){
+        $products = Product::where('store_id', '=', auth()->user()->id)->get();
+        return response()->json($products);
     }
 }

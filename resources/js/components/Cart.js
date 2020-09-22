@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import ReactDOM from "react-dom";
 import axios from 'axios';
 import { sum } from "lodash";
-import { Modal, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
 export default class Cart extends Component {
 
@@ -33,11 +32,27 @@ export default class Cart extends Component {
         this.transactNow = this.transactNow.bind(this);
         this.totalPrice = this.totalPrice.bind(this);
         this.getTotal = this.getTotal.bind(this);
+        this.addToCart = this.addToCart.bind(this);
+        this.getAllProducts = this.getAllProducts.bind(this);
     }
 
     componentDidMount(){
+        this.getAllProducts();
         this.getLowStocks();
         this.transactNow();
+    }
+
+
+    getAllProducts(){
+        axios.get('/getAllproduct')
+        .then(res => this.setState({products:res.data})
+        ,setTimeout(function() {
+            const script = document.createElement("script");
+            script.src = '../js/datatable.js';
+            script.async = true;
+            document.body.appendChild(script);
+        }.bind(this), 500)
+        );
     }
 
     getLowStocks(){
@@ -91,21 +106,17 @@ export default class Cart extends Component {
 
                 if(!found){
                     this.setState({cart: this.state.cart.concat(newArray)});
-    
+                    
                 }else{
                     const elementsIndex = this.state.cart.findIndex(element => element.id == item[0].id )
                     let newArray = [...this.state.cart];
                     newArray[elementsIndex] = {...newArray[elementsIndex], quantity: newArray[elementsIndex].quantity + 1};
                     this.setState({cart: newArray});
-                    console.log(this.state.cart);
                 }
 
         }else{
             Swal.fire("Error!", "Product Not Found!", "error");
         }
-      
-        
-
     }
 
     removeProd(id){
@@ -113,7 +124,6 @@ export default class Cart extends Component {
         this.setState({cart: this.state.cart.filter(function(prod) { 
             return prod.id !== id
         })});
-
     }
 
 
@@ -133,12 +143,17 @@ export default class Cart extends Component {
         newArray[elementsIndex] = {...newArray[elementsIndex], quantity: newArray[elementsIndex].quantity + 1};
         this.setState({cart: newArray});
     }
+    subtractQuantity(id){
+        const elementsIndex = this.state.cart.findIndex(element => element.id == id)
+        let newArray = [...this.state.cart];
+        newArray[elementsIndex] = {...newArray[elementsIndex], quantity: newArray[elementsIndex].quantity - 1};
+        this.setState({cart: newArray});
+    }
 
     getTotal(cart) {
         const total = cart.map(c => c.quantity * c.price);
         return sum(total).toFixed(2);
     }
-
     
     handleSubmit(){
         const {cart} = this.state;
@@ -167,6 +182,7 @@ export default class Cart extends Component {
                     this.emptyCart();
                     this.getLowStocks();
                     this.transactNow();
+                    this.getAllProducts();
 
                 }
                
@@ -177,15 +193,16 @@ export default class Cart extends Component {
         }else{
             Swal.fire("Error!", "No Items In The Cart", "error");
         }
-
-
-           
     }
 
+    addToCart(val){
+        this.setState({barcode:val});
+        this.handleScanBarcode();
+    }
+    
 
     render() {
-
-        const {cart, barcode, num_transactions} = this.state;
+        const {products, cart, barcode, num_transactions} = this.state;
         return (
             <div>
                 <div className="row">
@@ -202,6 +219,7 @@ export default class Cart extends Component {
                             <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
+                    
                     <div className="col-lg-6">
                         <div className="small-box bg-danger">
                         <div className="inner">
@@ -216,71 +234,126 @@ export default class Cart extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="row mt-5">
-                    <div className="col-md-12">
-                        <div className="row float-right">
-                            <div className=" col-sm-12 col-md-6">
-                                <input type="text" className="form-control" disabled  value={this.getTotal(this.state.cart)}></input>  
-                            </div>
 
-                            <div className=" col-sm-12 col-md-5 float-right">
-                                <form onSubmit={this.handleScanBarcode}>
-                                    <input type="text" className="form-control" 
-                                        placeholder="Scan Barcode..." name="barcode" value={barcode}
-                                        onChange={this.handleBarcode}  autoComplete="off" autoFocus>
-                                    </input>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="row mt-3">
-                    <div className=" col-sm-12 col-md-12">
-                        <div className="card">
-                            <table className="table">
-                                <thead className="thead-dark">
-                                    <tr>
-                                        <th>Product Name</th>
-                                        <th>Brand</th>
-                                        <th>Description</th>
-                                        <th>Quantity</th>
-                                        <th>Unit</th>
-                                        <th>Price</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                {cart.map(c => (
-                                    <tr key={c.id}>
-                                        <td>{c.product_name}</td>
-                                        <td>{c.brand_name}</td>
-                                        <td>{c.description}</td>
-                                        <td>{c.quantity}</td>
-                                        <td>{c.unit}</td>
-                                        <td>PHP {c.price * c.quantity}</td>
-                                        <td>
-                                            <button className="btn btn-danger" onClick={()=>this.removeProd(c.id)}><i className="fas fa-window-close"></i></button>
-                                            <span> <button className="btn btn-success" onClick={()=>this.addQuantity(c.id)}><i className="fa fa-plus"></i></button></span>
-                                            
-                                        </td>
-                                    </tr>
-                                ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+
+
                 <div className="row">
-                    <div className="col-sm-12  col-md-6 float-right">
-                        <button className="btn btn-danger btn-block" onClick={this.emptyCart}> <i className="fas fa-window-close"></i> Cancel</button>
-                    </div>
-                    <div className="col-sm-12 col-md-6 float-right" >
-                        <button className="btn btn-primary btn-block" onClick={this.handleSubmit}><i className="fa fa-shopping-cart"></i> Confirm</button>
+                    <div className="col-lg-12">
+                        <div className="row">
+                            <div className="col-lg-6">
+                                {/**  barcode input and display of total amount **/} 
+                                <div className="row mt-5">
+                                    <div className="col-md-12">
+                                        <div className="row">
+                                            <div className=" col-sm-12 col-md-6">
+                                                <input type="text" className="form-control" disabled  value={this.getTotal(this.state.cart)}></input>  
+                                            </div>
+                
+                                            <div className=" col-sm-12 col-md-6">
+                                                <form onSubmit={this.handleScanBarcode}>
+                                                    <input type="text" className="form-control" 
+                                                        placeholder="Scan Barcode..." name="barcode" value={barcode}
+                                                        onChange={this.handleBarcode}  autoComplete="off" autoFocus>
+                                                    </input>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/**  list of products added to cart **/} 
+                                <div className="row mt-3 user-cart">
+                                    <div className=" col-sm-12 col-lg-12">
+                                        <div className="card">
+                                            <table className="table">
+                                                <thead className="thead-dark">
+                                                    <tr>
+                                                        <th>Product Name</th>
+                                                        <th>Quantity</th>
+                                                        <th>Price</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                {cart.map(c => (
+                                                    <tr key={c.id}>
+                                                        <td>{c.product_name}</td>
+                                                        <td>{c.quantity}</td>
+                                                        <td>PHP {c.price * c.quantity}</td>
+                                                        <td>
+                                                             <button className="btn btn-success" onClick={()=>this.addQuantity(c.id)}><i className="fa fa-plus"></i></button>
+                                                             <button className="btn btn-success" onClick={()=>this.subtractQuantity(c.id)}><i className="fa fa-plus"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                {/**  submit or cancel **/}
+                                <div className="row">
+                                    <div className="col-sm-12  col-md-6">
+                                        <button className="btn btn-danger btn-block" onClick={this.emptyCart}> <i className="fas fa-window-close"></i> Cancel</button>
+                                    </div>
+                                    <div className="col-sm-12 col-md-6 float-right" >
+                                        <button className="btn btn-primary btn-block" onClick={this.handleSubmit}><i className="fa fa-shopping-cart"></i> Confirm</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/** blocks intended for searching products **/} 
+                            <div className="col-lg-6 mt-5">
+                                <div className="row">
+                                    <div className="col-lg-12">
+                                        <table id="example1" className="table table-bordered table-striped text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th>Product Name</th>
+                                                    <th>Brand Name</th>
+                                                    <th>Description</th>
+                                                    <th>Unit</th>
+                                                    <th>Price</th>
+                                                    <th>In Stock</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {products.map(p => (
+                                                    <tr key={p.id}>
+                                                        
+                                                        <td>{p.product_name}</td>
+                                                        <td>{p.brand_name}</td>
+                                                        <td>{p.description}</td>
+                                                        <td>{p.unit}</td>
+                                                        <td>{p.price}</td>
+                                                        <td>{p.quantity}</td>
+                                                        <td>
+                                                            <span> <button className="btn btn-success" onClick={()=>this.addToCart(p.barcode)}><i className="fas fa-shopping-cart"></i> Add To Cart</button></span>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>Product Name</th>
+                                                    <th>Brand Name</th>
+                                                    <th>Description</th>
+                                                    <th>Unit</th>
+                                                    <th>Price</th>
+                                                    <th>Quantity</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            
+            </div>            
         )
     }
 }
