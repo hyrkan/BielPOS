@@ -9,6 +9,8 @@ use Carbon\Carbon;
 use App\Order;
 use DB;
 use Illuminate\Http\Request;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+use Mike42\Escpos\Printer;
 class CartController extends Controller
 {
     /**
@@ -109,7 +111,55 @@ class CartController extends Controller
 
             }
         }
+        
+        $connector = new WindowsPrintConnector("EPSON TM-U220 Receipt");
+        $printer = new Printer($connector);
+        $printer -> initialize();
+        $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> text("Samson Store\n");
+        $printer -> selectPrintMode();
+        $printer -> text("Shop No. 001.\n");
+        $printer -> text($inID->invoice);
+        $printer -> feed();
 
+        $printer -> setEmphasis(true);
+        $printer -> text("SALES INVOICE\n");
+        $printer  -> text('\n');
+        $printer -> setJustification(Printer::JUSTIFY_LEFT);
+        $printer -> text(str_pad("Item", 10, " "));
+        $printer -> text(str_pad("Qty", 6, " "));
+        $printer -> text(str_pad("Price", 8 , " "));
+        $printer -> text("Total \n");
+        $printer -> setEmphasis(false);
+
+
+        foreach($data['cart'] as $cart)
+        {
+            $subtotal = $cart['quantity'] * $cart['price']; 
+            $printer -> text(str_pad($cart['product_name'] , 10 ," "));
+            $printer -> text(str_pad($cart['quantity'] , 6 ," "));
+            $printer -> text(str_pad($cart['price'] , 8 ," "));
+            $printer -> text($subtotal."\n");
+            
+        }
+
+
+        $printer -> feed();
+        $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+        $printer -> text("Total : ".$data['total']);
+        $printer -> selectPrintMode();
+
+        /* Footer */
+        $printer -> feed(2);
+        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+        $printer -> text("Thank you for shopping at Samson Store \n");
+        $printer -> text("For trading hours, please call us at 09xxxxx\n");
+        $printer -> feed(2);
+        $printer -> text($date . "\n");
+        $printer -> cut();
+        $printer -> pulse();
+        $printer -> close();
 
     }
 
@@ -117,4 +167,7 @@ class CartController extends Controller
         $products = Product::where('store_id', '=', auth()->user()->id)->get();
         return response()->json($products);
     }
+
+
+    
 }

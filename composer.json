@@ -15,7 +15,8 @@
         "laravel/framework": "^7.24",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.2",
-        "laraveldaily/laravel-invoices": "1.3"
+        "laraveldaily/laravel-invoices": "1.3",
+        "mike42/escpos-php": "^3.0"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

@@ -48,7 +48,8 @@ class ProductController extends Controller
             'price' => 'required',
             'description' => 'required',
             'set_low' => 'required',
-            'barcode' => 'required'
+            'barcode' => 'required',
+            'quantity' => 'required'
         ]);
 
 
@@ -61,7 +62,8 @@ class ProductController extends Controller
             'description' => $request['description'],
             'set_low' => $request['set_low'],
             'store_id' => $user->store->id,
-            'barcode' => $request['barcode']
+            'barcode' => $request['barcode'],
+            'quantity' => $request['quantity']
             
         ]);
 

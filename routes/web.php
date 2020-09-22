@@ -29,8 +29,6 @@ Route::group(['middleware'=>'auth'], function(){
     Route::get('/getTransact', 'CartController@getTransact');
     Route::get('/getAllproduct','CartController@getAllproduct');
     Route::resource('/report', 'ReportsController');
-    Route::get('generate-pdf/{id}','ReportsController@invoice');
-    
 });
 Route::get( '/{path?}', function(){
     return view( 'home' );

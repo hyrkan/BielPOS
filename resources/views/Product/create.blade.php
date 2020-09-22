@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                <h1>Add New  Account</h1>
+                <h1>Add New  Product To This Store</h1>
             </div>
             <div class="col-sm-6 float-right">
             <ol class="breadcrumb float-sm-right">
@@ -58,6 +58,11 @@
                                     <label for="price">Price</label>
                                     <input type="number" class="form-control" id="price" name="price" placeholder="Price" required step="any">  
                                     <span class="text-danger" role="alert">{{$errors->first('price')}}</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="quantity">Quantity</label>
+                                    <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Quantity" required>
+                                    <span class="text-danger" role="alert">{{$errors->first('quantity')}}</span>
                                 </div>
                                 <div class="form-group">
                                     <label for="set_low">Set Low Stock</label>

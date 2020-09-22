@@ -44,7 +44,7 @@ export default class Cart extends Component {
 
 
     getAllProducts(){
-        axios.get('/getAllproduct')
+        axios.get('http://127.0.0.1:8000/getAllproduct')
         .then(res => this.setState({products:res.data})
         ,setTimeout(function() {
             const script = document.createElement("script");
@@ -56,7 +56,7 @@ export default class Cart extends Component {
     }
 
     getLowStocks(){
-        axios.get("/getLowStock")
+        axios.get("http://127.0.0.1:8000/getLowStock")
         .then(res => {
           this.setState({num_low_stocks:res.data})
         }).catch(err => {
@@ -65,7 +65,7 @@ export default class Cart extends Component {
     }
 
     transactNow(){
-        axios.get("/getTransact")
+        axios.get("http://127.0.0.1:8000/getTransact")
         .then(res => {
           this.setState({num_transactions:res.data})
         }).catch(err => {
@@ -85,7 +85,7 @@ export default class Cart extends Component {
         
         if (!!barcode) {
             axios
-                .post("/getProduct", { barcode })
+                .post("http://127.0.0.1:8000/getProduct", { barcode })
                 .then(res => {
                     this.handlePush(res.data);
                     this.setState({ barcode: "" });
@@ -147,8 +147,14 @@ export default class Cart extends Component {
         const elementsIndex = this.state.cart.findIndex(element => element.id == id)
         let newArray = [...this.state.cart];
         newArray[elementsIndex] = {...newArray[elementsIndex], quantity: newArray[elementsIndex].quantity - 1};
-        this.setState({cart: newArray});
-    }
+
+            if (newArray[elementsIndex].quantity == 0){
+                
+            }else{
+                this.setState({cart: newArray});
+            }
+        }
+       
 
     getTotal(cart) {
         const total = cart.map(c => c.quantity * c.price);
@@ -174,7 +180,7 @@ export default class Cart extends Component {
                         showConfirmButton: false,
                         timer: 1500
                     }),
-                    axios.post("/cart_out",{
+                    axios.post("http://127.0.0.1:8000/cart_out",{
                         cart : cart,
                         total : this.getTotal(cart)
                     }),
@@ -197,7 +203,6 @@ export default class Cart extends Component {
 
     addToCart(val){
         this.setState({barcode:val});
-        this.handleScanBarcode();
     }
     
 
@@ -281,8 +286,10 @@ export default class Cart extends Component {
                                                         <td>{c.quantity}</td>
                                                         <td>PHP {c.price * c.quantity}</td>
                                                         <td>
-                                                             <button className="btn btn-success" onClick={()=>this.addQuantity(c.id)}><i className="fa fa-plus"></i></button>
-                                                             <button className="btn btn-success" onClick={()=>this.subtractQuantity(c.id)}><i className="fa fa-plus"></i></button>
+                                                            <span><button className="btn btn-warning mr-1" onClick={()=>this.subtractQuantity(c.id)}><i className="fa fa-minus"></i></button></span>
+                                                            <button className="btn btn-success mr-1" onClick={()=>this.addQuantity(c.id)}><i className="fa fa-plus"></i></button>
+                                                            <span><button className="btn btn-danger" onClick={()=>this.removeProd(c.id)}><i className="fas fa-window-close"></i> Remove</button></span>
+                                                             
                                                         </td>
                                                     </tr>
                                                 ))}

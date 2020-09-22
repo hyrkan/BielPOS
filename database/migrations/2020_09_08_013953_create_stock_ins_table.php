@@ -18,7 +18,7 @@ class CreateStockInsTable extends Migration
             $table->foreignId('product_id');
             $table->foreignId('store_id');
             $table->foreignId('user_id');
-            $table->integer('quantity');
+            $table->integer('quantity_added');
             $table->timestamps();
         });
     }

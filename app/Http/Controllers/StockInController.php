@@ -48,7 +48,7 @@ class StockInController extends Controller
     
         StockIn::create([
             'product_id' => $request['product_id'],
-            'quantity' => $request['quantity'],
+            'quantity_added' => $request['quantity'],
             'store_id' => auth()->user()->store->id,
             'user_id' => auth()->user()->id
         ]);

@@ -73,12 +73,12 @@
                 <p> Manage Inventories</p>
             </a>
           </li>
-          <li class="nav-item has-treeview">
+          <!-- <li class="nav-item has-treeview">
             <a href="#" class="nav-link {{ Request::is('inventories')? 'active' : '' }}">
               <i class=" fas fa-chart-area nav-icon"></i>
                 <p> Analytics</p>
             </a>
-          </li>
+          </li> -->
           <li class="nav-item has-treeview">
             <a href="/report" class="nav-link {{ Request::is('inventories')? 'active' : '' }}">
             <i class="fas fa-file-word nav-icon"></i>

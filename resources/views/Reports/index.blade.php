@@ -16,54 +16,6 @@
         </div>
         </div>
     </section>
-    <!-- <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-sm-9">
-                                       <h1>To Be Printed</h1>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <table  id="example3" class="table table-bordered table-striped text-center">
-                                <thead>
-                                    <tr>
-                                        <th>Billing ID</th>
-                                        <th>Revenue Per Billing</th>
-                                        <th>Date</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    
-                                </thead>
-                                <tbody>
-                                    
-                                    <tr>
-                                        <td>{{$inid->invoice}}</td>
-                                        <td>&#8369; {{$inid->total_price}}</td>
-                                        <td>{{ \Carbon\Carbon::parse($inid->created_at)->format('d/m/Y H:m:s')}}</td>
-                                        <td><a href="/generate-pdf/{{$inid->id}}" class="btn btn-primary"> <i class="fa fa-print"></i> Print</a></td>
-                                    </tr>
-                                   
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>Billing ID</th>
-                                        <th>Revenue Per Billing</th>
-                                        <th>Date</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </tfoot>
-                            </table>       
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -196,6 +148,56 @@
         </div>
     </section>
     
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                       <h1>Inventory Reports</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                        <table id="inventory_added" class="table table-bordered table-striped text-center">
+                            <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Brand Name</th>
+                                <th>Description</th>
+                                <th>Quantity Added</th>
+                                <th>Date Added</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($stocks_added as $stocks)
+                                    <tr>
+                                        <td>{{$stocks->product_name}}</td>
+                                        <td>{{$stocks->brand_name}}</td>
+                                        <td>{{$stocks->description}}</td>
+                                        <td>{{$stocks->quantity_added}}</td>
+                                        <td>{{ \Carbon\Carbon::parse($stocks->created_at)->format('d/m/Y H:m:s')}}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Brand Name</th>
+                                    <th>Description</th>
+                                    <th>Quantity Added</th>
+                                    <th>Date Added</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 @endsection
 
 @section('scripts')
@@ -216,7 +218,7 @@
                 ]
             });
 
-            $('#example4').DataTable();
+            $('#inventory_added').DataTable();
         });
     </script>
 @endsection

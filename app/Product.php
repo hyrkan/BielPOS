@@ -23,7 +23,7 @@ class Product extends Model
 
     public function stockin()
     {
-        return $this->belongsTo(StockIn::class);
+        return $this->hasMany(StockIn::class);
     }
 
     public function cart(){

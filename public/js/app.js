@@ -69226,7 +69226,7 @@ var Cart = /*#__PURE__*/function (_Component) {
     value: function getAllProducts() {
       var _this2 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/getAllproduct').then(function (res) {
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('http://127.0.0.1:8000/getAllproduct').then(function (res) {
         return _this2.setState({
           products: res.data
         });
@@ -69242,7 +69242,7 @@ var Cart = /*#__PURE__*/function (_Component) {
     value: function getLowStocks() {
       var _this3 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("/getLowStock").then(function (res) {
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("http://127.0.0.1:8000/getLowStock").then(function (res) {
         _this3.setState({
           num_low_stocks: res.data
         });
@@ -69253,7 +69253,7 @@ var Cart = /*#__PURE__*/function (_Component) {
     value: function transactNow() {
       var _this4 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("/getTransact").then(function (res) {
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("http://127.0.0.1:8000/getTransact").then(function (res) {
         _this4.setState({
           num_transactions: res.data
         });
@@ -69276,7 +69276,7 @@ var Cart = /*#__PURE__*/function (_Component) {
       var barcode = this.state.barcode;
 
       if (!!barcode) {
-        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/getProduct", {
+        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("http://127.0.0.1:8000/getProduct", {
           barcode: barcode
         }).then(function (res) {
           _this5.handlePush(res.data);
@@ -69378,9 +69378,12 @@ var Cart = /*#__PURE__*/function (_Component) {
       newArray[elementsIndex] = _objectSpread(_objectSpread({}, newArray[elementsIndex]), {}, {
         quantity: newArray[elementsIndex].quantity - 1
       });
-      this.setState({
-        cart: newArray
-      });
+
+      if (newArray[elementsIndex].quantity == 0) {} else {
+        this.setState({
+          cart: newArray
+        });
+      }
     }
   }, {
     key: "getTotal",
@@ -69413,7 +69416,7 @@ var Cart = /*#__PURE__*/function (_Component) {
               title: 'Transaction complete',
               showConfirmButton: false,
               timer: 1500
-            }), axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/cart_out", {
+            }), axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("http://127.0.0.1:8000/cart_out", {
               cart: cart,
               total: _this6.getTotal(cart)
             }), _this6.emptyCart();
@@ -69437,7 +69440,6 @@ var Cart = /*#__PURE__*/function (_Component) {
       this.setState({
         barcode: val
       });
-      this.handleScanBarcode();
     }
   }, {
     key: "render",
@@ -69528,21 +69530,28 @@ var Cart = /*#__PURE__*/function (_Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Product Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Quantity"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Price"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Action"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, cart.map(function (c) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
           key: c.id
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, c.product_name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, c.quantity), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "PHP ", c.price * c.quantity), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-          className: "btn btn-success",
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, c.product_name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, c.quantity), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "PHP ", c.price * c.quantity), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          className: "btn btn-warning mr-1",
+          onClick: function onClick() {
+            return _this7.subtractQuantity(c.id);
+          }
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fa fa-minus"
+        }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          className: "btn btn-success mr-1",
           onClick: function onClick() {
             return _this7.addQuantity(c.id);
           }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fa fa-plus"
-        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-          className: "btn btn-success",
+        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          className: "btn btn-danger",
           onClick: function onClick() {
-            return _this7.subtractQuantity(c.id);
+            return _this7.removeProd(c.id);
           }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fa fa-plus"
-        }))));
+          className: "fas fa-window-close"
+        }), " Remove"))));
       })))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
