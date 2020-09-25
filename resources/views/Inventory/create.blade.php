@@ -25,7 +25,7 @@
                             <form action="/inventory" method="POST">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="product_name">Add Quantity To {{$product->brand_name}}</label>
+                                    <label for="product_name">Add Quantity To {{$product->product_name}}  {{$product->brand_name}} ({{$product->description}})</label>
                                     <input type="hidden" name="product_id" value="{{$product->id}}">
                                     <input type="number" class="form-control" id="product_name" name="quantity" placeholder="Quantity" required autocomplete="off"> 
                                     <span class="text-danger" role="alert">{{$errors->first('quantity')}}</span>

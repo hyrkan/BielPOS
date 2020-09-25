@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Product;
+use App\StockIn;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -14,8 +15,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::where('store_id', '=', auth()->user()->id)->get();
+        $products = Product::where('store_id', '=', auth()->user()->store_id)->get();
         return view('Product.index',compact('products'));
+
     }
 
     /**
@@ -45,15 +47,16 @@ class ProductController extends Controller
             'product_name' => 'required',
             'brand_name' => 'required',
             'unit' => 'required',
-            'price' => 'required',
+            'price' => 'required|max:6',
             'description' => 'required',
             'set_low' => 'required',
-            'barcode' => 'required',
+            'barcode' => 'required|unique:products',
+            'original_price' => 'required|max:6',
             'quantity' => 'required'
         ]);
 
 
-        Product::create([
+        $product_id = Product::create([
 
             'product_name' => $request['product_name'],
             'brand_name' => $request['brand_name'],
@@ -63,9 +66,18 @@ class ProductController extends Controller
             'set_low' => $request['set_low'],
             'store_id' => $user->store->id,
             'barcode' => $request['barcode'],
+            'original_price' => $request['original_price'],
             'quantity' => $request['quantity']
             
         ]);
+
+        StockIn::create([
+            'product_id' => $product_id->id,
+            'quantity_added' => $request['quantity'],
+            'store_id' => auth()->user()->store->id,
+            'user_id' => auth()->user()->id
+        ]);
+        
 
         return redirect('/product')->with('message', 'Successfully Added A New Product');
 
@@ -125,9 +137,11 @@ class ProductController extends Controller
             'product_name' => 'required',
             'brand_name' => 'required',
             'unit' => 'required',
-            'price' => 'required',
+            'price' => 'required|max:6',
             'description' => 'required',
-            'set_low' => 'required'
+            'set_low' => 'required',
+            'barcode' => 'required|unique:products',
+            'original_price' => 'required|max:6',
         ]);
     }
 }

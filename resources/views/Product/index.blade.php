@@ -41,56 +41,63 @@
                             </div>
                         </div>
                         <div class="card-body">
-                        <table id="example1" class="table table-bordered table-striped text-center">
-                            <thead>
-                            <tr>
-                                <th>Barcode</th>
-                                <th>Product Name</th>
-                                <th>Brand Name</th>
-                                <th>Description</th>
-                                <th>Unit</th>
-                                <th>Price</th>
-                                <th>Low Stock</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($products as $product)
-                                    <tr>
-                                        <td>{{$product->barcode}}</td>
-                                        <td>{{$product->product_name}}</td>
-                                        <td>{{$product->brand_name}}</td>
-                                        <td>{{$product->description}}</td>
-                                        <td>{{$product->unit}}</td>
-                                        <td>{{$product->price}}</td>
-                                        <td>{{$product->set_low}}</td>
-                                        <td>
-                                            <div class="d-flex flex-row justify-content-center">
-                                                <div class="p-2"><a href="/product/{{$product->id}}" class="btn btn-primary"> <i class="fa fa-edit"></i> Edit</a></div>
-                                                <div class="p-2"> 
-                                                    <form action="/product/{{$product->id}}" method="POST">
-                                                        @csrf 
-                                                        @method("DELETE")
-                                                        <button  onClick="return confirm('Are you sure you want to delete?')" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
-                                                    </form>
-                                            </div> 
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-                            <tr>
-                                <th>Barcode</th>
-                                <th>Product Name</th>
-                                <th>Product Brand</th>
-                                <th>Description</th>
-                                <th>Unit</th>
-                                <th>Price</th>
-                                <th>Low Stock</th>
-                                <th>Actions</th>
-                            </tr>
-                            </tfoot>
-                        </table>
+                            <table id="example1" class="table table-bordered table-striped text-center">
+                                <thead>
+                                <tr>
+                                    <th>Barcode</th>
+                                    <th>Product Name</th>
+                                    <th>Brand Name</th>
+                                    <th>Description</th>
+                                    <th>Unit</th>
+                                    <th>Original Price</th>
+                                    <th>Selling Price</th>
+                                    <th>In Stock</th>
+                                    <th>Low Stock Settings</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($products as $product)
+                                        <tr>
+                                            <td>{{$product->barcode}}</td>
+                                            <td>{{$product->product_name}}</td>
+                                            <td>{{$product->brand_name}}</td>
+                                            <td>{{$product->description}}</td>
+                                            <td>{{$product->unit}}</td>
+                                            <td>{{$product->original_price}}</td>
+                                            <td>{{$product->price}}</td>
+                                            <td>{{$product->quantity}}</td>
+                                            <td>{{$product->set_low}}</td>
+                                            <td>
+                                                <div class="d-flex flex-row justify-content-center">
+                                                    <div class="p-2"><a href="/product/{{$product->id}}" class="btn btn-primary"> <i class="fa fa-edit"></i> Edit</a></div>
+                                                    <div class="p-2"><a href="/inventory/{{$product->id}}" class="btn btn-primary"><i class="fa fa-plus"></i> Add Stock</a></div>
+                                                    <div class="p-2"> 
+                                                        <form action="/product/{{$product->id}}" method="POST">
+                                                            @csrf 
+                                                            @method("DELETE")
+                                                            <button  onClick="return confirm('Are you sure you want to delete?')" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
+                                                        </form>
+                                                </div> 
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th>Barcode</th>
+                                    <th>Product Name</th>
+                                    <th>Product Brand</th>
+                                    <th>Description</th>
+                                    <th>Unit</th>
+                                    <th>Original Price</th>
+                                    <th>Selling Price</th>
+                                    <th>In Stock</th>
+                                    <th>Low Stock Settings</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </tfoot>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -103,8 +110,12 @@
 
 @section('scripts')
     <script>
-        $(function () {    
-            $('#example1').DataTable();
-        });
+        $('#example1').DataTable({
+                dom: 'Blfrtip',
+                buttons: [
+                    { extend: 'print', text: '<i class="fas fa-print">Print</i>' },
+                ]
+            });
+            table.button( '2-4' ).remove();
     </script>
 @endsection

@@ -164,7 +164,7 @@ class CartController extends Controller
     }
 
     public function getAllproduct(){
-        $products = Product::where('store_id', '=', auth()->user()->id)->get();
+        $products = Product::where('store_id', '=', auth()->user()->store_id)->get();
         return response()->json($products);
     }
 

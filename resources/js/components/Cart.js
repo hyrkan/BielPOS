@@ -269,7 +269,7 @@ export default class Cart extends Component {
                                 {/**  list of products added to cart **/} 
                                 <div className="row mt-3 user-cart">
                                     <div className=" col-sm-12 col-lg-12">
-                                        <div className="card">
+                                        <div className="card order_card">
                                             <table className="table">
                                                 <thead className="thead-dark">
                                                     <tr>
@@ -279,9 +279,9 @@ export default class Cart extends Component {
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody className="mb-5">
                                                 {cart.map(c => (
-                                                    <tr key={c.id}>
+                                                    <tr key={c.id} >
                                                         <td>{c.product_name}</td>
                                                         <td>{c.quantity}</td>
                                                         <td>PHP {c.price * c.quantity}</td>
@@ -290,7 +290,7 @@ export default class Cart extends Component {
                                                             <button className="btn btn-success mr-1" onClick={()=>this.addQuantity(c.id)}><i className="fa fa-plus"></i></button>
                                                             <span><button className="btn btn-danger" onClick={()=>this.removeProd(c.id)}><i className="fas fa-window-close"></i> Remove</button></span>
                                                              
-                                                        </td>
+                                                        </td> 
                                                     </tr>
                                                 ))}
                                                 </tbody>

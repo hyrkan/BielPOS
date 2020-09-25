@@ -24,7 +24,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-sm-9">
-                                       <h1>Transactions</h1>
+                                       <h1>Todays' Transactions</h1>
                                 </div>
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                                             <tr>
                                                 <td>{{$transaction->invoice}}</td>
                                                 <td>P {{$transaction->total_price}}</td>
-                                                <td>{{ \Carbon\Carbon::parse($transaction->created_at)->format('d/m/Y H:m:s')}}</td>
+                                                <td>{{ \Carbon\Carbon::parse($transaction->created_at)->format('m/d/Y')}}</td>
                                                 <td>-</td>
                                             </tr>
                                             @endforeach
@@ -123,7 +123,7 @@
                                                 <td>{{$order->unit}}</td>
                                                 <td>{{$order->quantity}}</td>
                                                 <td>&#8369;{{$order->price }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($order->created_at)->format('d/m/Y H:i:s')}}</td>
+                                                <td>{{ \Carbon\Carbon::parse($order->created_at)->format('m/d/Y')}}</td>
                                             </tr>
                                             @endforeach
                                         </tbody>
@@ -147,7 +147,6 @@
             </div>
         </div>
     </section>
-    
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -156,7 +155,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-sm-9">
-                                       <h1>Inventory Reports</h1>
+                                       <h1>Monthly Inventory Reports</h1>
                                 </div>
                             </div>
                         </div>
@@ -167,8 +166,11 @@
                                 <th>Product Name</th>
                                 <th>Brand Name</th>
                                 <th>Description</th>
+                                <th>Original Price</th>
                                 <th>Quantity Added</th>
+                                <th>Invested Per Product</th>
                                 <th>Date Added</th>
+                                <th>Total Investment : &#8369;{{$investment}} </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -177,8 +179,15 @@
                                         <td>{{$stocks->product_name}}</td>
                                         <td>{{$stocks->brand_name}}</td>
                                         <td>{{$stocks->description}}</td>
+                                        <td>{{$stocks->original_price}}</td>
                                         <td>{{$stocks->quantity_added}}</td>
-                                        <td>{{ \Carbon\Carbon::parse($stocks->created_at)->format('d/m/Y H:m:s')}}</td>
+                                        <td>
+                                            @php
+                                                {{echo $invested = $stocks->original_price * $stocks->quantity_added;}}
+                                            @endphp
+                                        </td>
+                                        <td>{{ \Carbon\Carbon::parse($stocks->created_at)->format('m/d/Y')}}</td>
+                                        <td>-</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -187,8 +196,11 @@
                                     <th>Product Name</th>
                                     <th>Brand Name</th>
                                     <th>Description</th>
+                                    <th>Original Price</th>
                                     <th>Quantity Added</th>
+                                    <th>Invested Per Product</th>
                                     <th>Date Added</th>
+                                    <th>Total Investment : &#8369;{{$investment}} </th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -218,7 +230,12 @@
                 ]
             });
 
-            $('#inventory_added').DataTable();
+            $('#inventory_added').DataTable({
+                dom: 'Blfrtip',
+                buttons: [
+                    { extend: 'print', text: '<i class="fas fa-print">Print</i>' },
+                ]
+            });
         });
     </script>
 @endsection

@@ -15,9 +15,7 @@ class StockInController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
-        $products = Product::where('store_id',$user->store->id)->get();
-        return view('Inventory.index',compact('products'));
+        
     }
 
     /**
@@ -57,7 +55,7 @@ class StockInController extends Controller
                             ->where('store_id', '=', auth()->user()->store->id) 
                             ->Increment('quantity', $request['quantity']);
                             
-        return redirect('/inventory')->with('message','Successfully Added Stock On The Product');
+        return redirect('/product')->with('message','Successfully Added Stock On The Product');
         
     }
 

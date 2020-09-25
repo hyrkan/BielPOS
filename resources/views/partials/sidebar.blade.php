@@ -49,6 +49,7 @@
               </li>
             </ul>
           </li>
+          @if(auth()->user()->role == 'admin')
           <li class="nav-item has-treeview">
             <a href="/product" class="nav-link {{ Request::is('product')? 'active' : '' }}">
               <i class="fas fa-clipboard nav-icon"></i>
@@ -67,12 +68,12 @@
               <p> Manage Accounts</p>
             </a>
           </li>
-          <li class="nav-item has-treeview">
+          <!-- <li class="nav-item has-treeview">
             <a href="/inventory" class="nav-link {{ Request::is('inventories')? 'active' : '' }}">
               <i class="fas fa-briefcase nav-icon"></i>
                 <p> Manage Inventories</p>
             </a>
-          </li>
+          </li> -->
           <!-- <li class="nav-item has-treeview">
             <a href="#" class="nav-link {{ Request::is('inventories')? 'active' : '' }}">
               <i class=" fas fa-chart-area nav-icon"></i>
@@ -80,11 +81,20 @@
             </a>
           </li> -->
           <li class="nav-item has-treeview">
-            <a href="/report" class="nav-link {{ Request::is('inventories')? 'active' : '' }}">
+            <a href="/analytics" class="nav-link {{ Request::is('analytics')? 'active' : '' }}">
+            <i class="fas fa-chart-bar nav-icon"></i>
+                <p> Analytics</p>
+            </a>
+          </li>
+          <li class="nav-item has-treeview">
+          <a href="/report" class="nav-link {{ Request::is('report')? 'active' : '' }}">
             <i class="fas fa-file-word nav-icon"></i>
                 <p> Reports</p>
             </a>
           </li>
+
+
+          @endif
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

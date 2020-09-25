@@ -20,6 +20,7 @@ class CreateProductsTable extends Migration
             $table->string('barcode');
             $table->string('brand_name');
             $table->string('unit');
+            $table->decimal('original_price', 8, 2);
             $table->decimal('price', 8, 2);
             $table->bigInteger('quantity')->default(1);
             $table->integer('set_low');

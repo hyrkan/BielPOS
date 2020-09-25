@@ -55,8 +55,13 @@
                                     <span class="text-danger" role="alert">{{$errors->first('unit')}}</span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="price">Price</label>
-                                    <input type="number" class="form-control" id="price" name="price" placeholder="Price" required step="any">  
+                                    <label for="original_price">Original Price</label>
+                                    <input type="number" class="form-control" id="original_price" name="original_price" placeholder="Original Price" required step="any">  
+                                    <span class="text-danger" role="alert">{{$errors->first('original_price')}}</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="price">Selling Price</label>
+                                    <input type="number" class="form-control" id="price" name="price" placeholder="Selling Price" required step="any">  
                                     <span class="text-danger" role="alert">{{$errors->first('price')}}</span>
                                 </div>
                                 <div class="form-group">
